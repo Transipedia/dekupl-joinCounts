@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 	}
 
   int nb_count_files = argc - optind;
-  int dret = 0;
+  int dret = 0, i;
 
   it_t *counts_it = calloc(nb_count_files, sizeof(it_t));
   int  *counts    = calloc(nb_count_files, sizeof(int));
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
   kstring_t min_kmer = { 0, 0, NULL }, next_min_kmer = { 0, 0, NULL };
   str = calloc(1, sizeof(kstring_t));
 
-  for(int i = 0; i < nb_count_files; i++) {
+  for(i = 0; i < nb_count_files; i++) {
     char *counts_file = argv[optind++];
     counts_it[i].fp = gzopen(counts_file, "r");
     if(!counts_it[i].fp) { fprintf(stderr, "Failed to open %s\n", counts_file); exit(EXIT_FAILURE); }
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
     read = 0;
     next_min_kmer.l = 0;
     int rec = 0;
-    for(int i = 0; i < nb_count_files; i++) {
+    for(i = 0; i < nb_count_files; i++) {
       if(counts_it[i].kmer && strcmp(counts_it[i].kmer,min_kmer.s) == 0) {
         counts[i] = counts_it[i].count;
         if(counts[i] >= min_recurrence_abundance) {
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     // Print k-mer in reccurence is enough
     if(rec >= min_recurrence) {
       fprintf(stdout, "%s", min_kmer.s);
-      for(int i = 0; i < nb_count_files; i++) {
+      for(i = 0; i < nb_count_files; i++) {
         fprintf(stdout, "\t%d", counts[i]);
       }
       fprintf(stdout, "\n");
