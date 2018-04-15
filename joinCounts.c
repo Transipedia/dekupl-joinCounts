@@ -74,7 +74,9 @@ int main(int argc, char *argv[]) {
     next_min_kmer.l = 0;
     int rec = 0;
     for(i = 0; i < nb_count_files; i++) {
+      //fprintf(stderr, "%i => %s\n", i, counts_it[i].kmer);
       if(counts_it[i].kmer && strcmp(counts_it[i].kmer,min_kmer.s) == 0) {
+        read = 1;
         counts[i] = counts_it[i].count;
         if(counts[i] >= min_recurrence_abundance) {
           rec++;
@@ -85,7 +87,6 @@ int main(int argc, char *argv[]) {
           counts_it[i].kmer = ks_release(str);
           ks_getuntil(counts_it[i].ks, 0, str, &dret);
           counts_it[i].count = atoi(str->s);
-          read = 1;
         } else {
           counts_it[i].kmer = NULL;
         }
